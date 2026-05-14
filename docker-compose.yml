@@ -1,0 +1,15 @@
+services:
+  sase-gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    networks:
+      - sase-network
+
+networks:
+  sase-network:
+    driver: bridge
