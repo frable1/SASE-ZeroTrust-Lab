@@ -11,7 +11,7 @@ from cryptography.fernet import Fernet
 from typing import Optional, Dict
 
 class SASECryptomanager:
-    def __init__(self, master_key: butes, jwt_secret: str):
+    def __init__(self, master_key: bytes, jwt_secret: str):
         """
         Initialize the cryptographic manager.
         :param master_key: Data encryption key (AES-256 sim).
@@ -30,14 +30,14 @@ class SASECryptomanager:
             "sub": user_id,
             "role": role,
             "iat": datetime.datetime.utcnow(),
-            "exp": datetime.datetime.utcnow() + datetime-timedelta(minutes=30)
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
         }
         return jwt.encode(payload, self.jwt_secret, algorithm="HS256")
     
     def verify_token(self, token: str) -> Optional[Dict]:
         """Check if the token is valid and not counterfeit."""
         try: 
-            return jwt.decode(token, self.jwt_secret, algorithm=["HS256"])
+            return jwt.decode(token, self.jwt_secret, algorithms=["HS256"])
         except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
             return None
         

@@ -1,0 +1,6 @@
+cryptography
+pyjwt
+fastapi
+uvicorn
+requests
+rich
