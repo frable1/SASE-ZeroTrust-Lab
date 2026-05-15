@@ -16,13 +16,19 @@ import json
 load_dotenv()
 URL = "http://127.0.0.1:8000/access"
 
-def print_result(scenario, resp):
+def print_result(scenario, resp, expected_status):
     """
-    Helper function to format the output for each attack scenario.
+    Check if the result matches expectations and print the outcome.
     """
+    status = resp.status_code
+    is_passed = (status == expected_status)
+
+    result_label = "TEST PASSED" if is_passed else "TEST FAILED"
+    
     print(f"Scenario: {scenario} ")
-    print(f"Result: status code {resp.status_code}")
+    print(f"Expected: {expected_status} | Received: {status}")
     print(f"Gateway response: {resp.json().get('detail', 'Success')}")
+    print(f"Result: {result_label}")
     print("-" * 45 + "\n")
 
 def run_demo():
@@ -39,17 +45,21 @@ def run_demo():
         return
 
     # 1. Anonymous access - missing token
-    print("[TEST 1] Sending request without Identity Token...")
-    r = requests.post(URL)
-    print_result("Anonymous access", r)
+    print("[TEST 1] Sending request without identity token...")
+    try:
+        r = requests.post(URL)
+        print_result("Anonymous access", r, 401)
+    except requests.exceptions.ConnectionError:
+        print("ERROR: Gateway is down. Did you run 'docker compose up'?")
+        return
     time.sleep(1.5)
 
-    # 2. Identity spoofing - counterfeit token
+    # 2. Identity spoofing - counterfeit token 
     print("[TEST 2] Sending request with a Counterfeit Token...")
     # Manually creating a token with an invalid signature
     fake_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.fake_payload.fake_signature"
     r = requests.post(URL, headers={"x-identity-token": fake_token})
-    print_result("Identity spoofing", r)
+    print_result("Identity spoofing", r, 403)
     time.sleep(1.5)
 
     # 3. Data tampering - valid identity but malformed ciphertext
@@ -61,20 +71,19 @@ def run_demo():
         headers={"x-identity-token": valid_token}, 
         params={"encrypted_payload": "garbage_unencrypted_data"}
     )
-    print_result("Data tampering", r)
+    print_result("Data tampering", r, 400)
     time.sleep(1.5)
 
     # 4. Authorized access - the success baseline
     print("[TEST 4] Sending fully authorized SASE request...")
     # Let's turn the dictionary into a JSON string
     data_to_encrypt = json.dumps({"action": "read", "resource": "GitLab"})
-    
     valid_payload = crypto.encrypt_data(data_to_encrypt)
     
     r = requests.post(URL, 
                       headers={"x-identity-token": valid_token}, 
                       params={"encrypted_payload": valid_payload})
-    print_result("Authorized access", r)
+    print_result("Authorized access", r, 200)
 
 if __name__ == "__main__":
     run_demo()
