@@ -26,5 +26,5 @@ def generate_env_file():
     print("[SUCCESS] .env file created successfully.")
     print("Remember: This file should NOT be uploaded to GitHub!")
     
-    #if __name__ == '__main__':
-generate_env_file()
+if __name__ == '__main__':
+    generate_env_file()

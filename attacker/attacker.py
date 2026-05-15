@@ -41,7 +41,7 @@ if __name__ == "__main__":
     # We import the core to generate a valid token for testing
     load_dotenv()
     crypto_test = SASECryptomanager(os.getenv("MASTER_KEY").encode(), os.getenv("JWT_SECRET"))
-    token_valido = crypto_test.generate_token("attaccante_astuto", "developer")
+    token_valido = crypto_test.generate_token("sase_identity_01", "developer")
     
     headers_valid = {"x-identity-token": token_valido}
     params_malformed = {"encrypted_payload": "not_encrypted_garbage"}

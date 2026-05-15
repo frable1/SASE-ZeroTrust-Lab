@@ -50,7 +50,7 @@ def send_secure_request(user_id: str, role: str, message: str):
 if __name__ == "__main__":
     # Simulate access by an authorized user
     send_secure_request(
-        user_id="francesco_dev",
+        user_id="sase_identity_01",
         role="developer",
         message="Request access to the internal GitLab server."
     )
