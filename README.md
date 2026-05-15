@@ -4,6 +4,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-Framework-009688.svg)](https://fastapi.tiangolo.com/)
 [![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED.svg)](https://www.docker.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tests](https://img.shields.io/badge/Tests-Passing-brightgreen.svg)](#-testing--validation)
 
 ## Project Overview
 This project is a technical proof-of-concept demonstrating the architectural shift from Legacy Perimeter Security (Firewalls) to Secure Access Service Edge (SASE).
@@ -144,14 +145,43 @@ When the client successfully authenticates and sends data:
 
 ```
 
-## Security Scenarios Tested
+## Testing and Validation
+
+To verify the security enforcement of the SASE Gateway, you can use the built-in simulation tools.
+
+### Interactive Security Demo
+Run the interactive attacker simulation to see how the Gateway handles different threat scenarios in real-time:
+
+```bash
+python3 -m attacker.attacker
+```
+### Security Scenarios Tested
 | Scenario | Tool | Expected Result |
 |----------|------|-----------------|
-| Authorized user | client.client |200 OK - Access Granted |
 | No identity | attacker.attacker | 401 - Unauthorized |
 | Fake identity | attacker.attacker | 403 - Forbidden |
 | Data tampering | attacker.attacker | 400 - Decryption Failed |
+| Authorized user | client.client |200 OK - Access Granted |
 
+## Testing the integrity
+
+The integrity of the Zero Trust pipeline is verified through automated unit tests. These tests ensure that the Gateway correctly handles identity validation, cryptographic checks, and data integrity.
+
+### Run Automated Tests
+To execute the test suite, ensure the SASE Gateway - Docker - is running, then use:
+
+```bash
+# Install testing dependencies
+pip install pytest
+
+# Run the validation suite
+python3 -m pytest
+```
+### What is being tested?
+* **Identity Enforcement**: Verifies that anonymous requests are blocked (**401 Unauthorized**).
+* **Cryptographic Signature**: Ensures counterfeit or tampered JWTs are rejected (**403 Forbidden**).
+* **Payload Integrity**: Confirms that malformed or cleartext data triggers a decryption failure (**400 Bad Request**).
+* **Zero Trust Success**: Validates the end-to-end flow for authorized users (**200 OK**).
 
 ## Troubleshooting
 

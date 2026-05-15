@@ -11,7 +11,7 @@ import os
 from dotenv import load_dotenv
 from core.crypto_engine import SASECryptomanager
 
-# Load security keys from the.env file
+# Load security keys from the .env file
 load_dotenv()
 
 # Let's initialize the cryptographic engine

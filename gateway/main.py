@@ -11,7 +11,7 @@ from core.crypto_engine import SASECryptomanager
 import os
 from dotenv import load_dotenv
 
-# Load keys from the generated.env file
+# Load keys from the generated .env file
 load_dotenv()
 
 app = FastAPI(title="SASE PoP Gateway")

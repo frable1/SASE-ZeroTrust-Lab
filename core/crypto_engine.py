@@ -7,6 +7,7 @@ Description: Managing symmetric encryption and JWT identity tokens.
 """
 import jwt
 import datetime
+from datetime import UTC
 from cryptography.fernet import Fernet
 from typing import Optional, Dict
 
@@ -26,11 +27,11 @@ class SASECryptomanager:
         Create a JWT token for the user. 
         Demonstrates the concept of 'Identity-as-a-Perimeter'.
         """
-        payload={
-            "sub": user_id,
-            "role": role,
-            "iat": datetime.datetime.utcnow(),
-            "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+        payload = {
+        "sub": user_id,
+        "role": role,
+        "iat": datetime.datetime.now(UTC),
+        "exp": datetime.datetime.now(UTC) + datetime.timedelta(minutes=30)
         }
         return jwt.encode(payload, self.jwt_secret, algorithm="HS256")
     
