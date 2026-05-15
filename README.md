@@ -86,7 +86,7 @@ sudo usermod -aG docker $USER
 ### Installation
 Clone the repository and set up the environment:
 ```Bash
-git clone [https://github.com/frable1/SASE-ZeroTrust-Lab.git](https://github.com/frable1/SASE-ZeroTrust-Lab.git)
+git clone https://github.com/frable1/SASE-ZeroTrust-Lab.git
 cd SASE-ZeroTrust-Lab
 python3 -m venv venv
 source venv/bin/activate
