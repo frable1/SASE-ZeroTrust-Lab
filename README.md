@@ -149,8 +149,8 @@ When the client successfully authenticates and sends data:
 |----------|------|-----------------|
 | Authorized user | client.client |200 OK - Access Granted |
 | No identity | attacker.attacker | 401 - Unauthorized |
-| Fake identity | attacker.attacker | 403 Forbidden |
-| Data tampering | attacker.attacker | 400 Decryption Failed |
+| Fake identity | attacker.attacker | 403 - Forbidden |
+| Data tampering | attacker.attacker | 400 - Decryption Failed |
 
 
 ## Troubleshooting
